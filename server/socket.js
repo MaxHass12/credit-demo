@@ -14,7 +14,7 @@ const setupSocket = (server) => {
 
     setInterval(() => {
       socket.emit('randomNumber', Math.random());
-    }, 5000);
+    }, 10000);
 
     socket.on('changeInfo', ({ type, payload }) => {
       if (type === 'OT') {
@@ -23,8 +23,15 @@ const setupSocket = (server) => {
         } else if (payload.actionType === 'DEC') {
           serverState -= 1;
         }
-        console.log(serverState);
         io.emit('broadcast', { serverState });
+      }
+
+      if (type === 'OpCRDT') {
+        // const delay = 0;
+        const delay = Math.floor(Math.random() * (2000 - 100 + 1)) + 100;
+        setTimeout(() => {
+          io.emit('broadcast', payload);
+        }, delay);
       }
     });
 

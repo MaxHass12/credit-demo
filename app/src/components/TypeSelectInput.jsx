@@ -17,11 +17,21 @@ const TypeSelectedInput = ({ selectedOption, onChange }) => {
       <label>
         <input
           type="radio"
-          value=""
-          checked={selectedOption === 'OperationCRDT'}
-          // onChange={(e) => setSelectedOption(e.target.value)}
+          value="OpCRDT"
+          checked={selectedOption === 'OpCRDT'}
+          onChange={handleChange}
         />
         Operation CRDT
+      </label>
+
+      <label>
+        <input
+          type="radio"
+          value="StateCRDT"
+          checked={selectedOption === 'StateCRDT'}
+          onChange={handleChange}
+        />
+        State CRDT
       </label>
     </div>
   );
