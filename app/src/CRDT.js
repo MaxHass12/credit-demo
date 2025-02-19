@@ -1,3 +1,5 @@
+import { getTimeString } from './utils';
+
 export class OpCRDT {
   #counterValue;
   #history;
@@ -49,13 +51,20 @@ export class StateCRDT {
     this.#history = [];
   }
 
-  changeState(actionType) {
+  registerEvent(actionType) {
     if (actionType === 'INC') {
       this.#state.numPositives += 1;
     } else if (actionType === 'DEC') {
-      this.#state.numNegatives -= 1;
+      this.#state.numNegatives += 1;
     }
 
+    const timestamp = getTimeString();
+    this.#history.push([
+      'self',
+      timestamp,
+      this.#state.numPositives,
+      this.#state.numNegatives,
+    ]);
     return { ...this.#state };
   }
 
@@ -67,13 +76,19 @@ export class StateCRDT {
     return [...this.#history];
   }
 
-  merge({ numPositives, numNegatives }) {
+  merge({ clientId, numPositives, numNegatives }) {
     const newNumPositives = Math.max(this.#state.numPositives, numPositives);
     const newNumNegatives = Math.max(this.#state.numNegatives, numNegatives);
 
     this.#state.numPositives = newNumPositives;
     this.#state.numNegatives = newNumNegatives;
 
-    this.#history.push({ ...this.#state });
+    const timestamp = getTimeString();
+    this.#history.push([
+      clientId,
+      timestamp,
+      this.#state.numPositives,
+      this.#state.numNegatives,
+    ]);
   }
 }

@@ -18,15 +18,18 @@ function OperationCRDT() {
     setRandomNumber(val);
   }, []);
 
-  const handleInitialConnectResponse = useCallback((serverState) => {}, []);
+  const handleInitialConnectResponse = useCallback(() => {}, []);
 
-  const handleBroadcastReceived = useCallback((payload) => {
-    crdt.registerEvent(payload);
-    setRandomStateForRerender(Math.random());
-  }, []);
+  const handleBroadcastReceived = useCallback(
+    (payload) => {
+      crdt.registerEvent(payload);
+      setRandomStateForRerender(Math.random());
+    },
+    [crdt]
+  );
 
   const { clientId, sendChangeInfo } = useSocket({
-    type: ' OperationCRDT',
+    type: 'OpCRDT',
     onRandomNumberReceived: handleRandomNumberReceived,
     onInitialConnectResponse: handleInitialConnectResponse,
     onBroadcastReceived: handleBroadcastReceived,
@@ -49,8 +52,8 @@ function OperationCRDT() {
   };
 
   return (
-    <div>
-      <h2>Operational Transformation</h2>
+    <div className="card-container">
+      <h2>Operation Based CRDT</h2>
       {clientId && (
         <div>
           <p>Socket Connection Established. Client Id : {clientId}</p>
@@ -62,8 +65,8 @@ function OperationCRDT() {
         onIncrease={() => handleCounterChange('INC')}
         onDecrease={() => handleCounterChange('DEC')}
       />{' '}
-      <div>
-        <h3>Change History</h3>
+      <div className="table-wrapper">
+        <h3>Operation History</h3>
         <TableComponent data={crdt.getHistory()} />
       </div>
     </div>

@@ -1,6 +1,9 @@
 import { useEffect, useState, useCallback } from 'react';
 import { io } from 'socket.io-client';
 
+const BASE_URL = window.location.url;
+// const BASE_URL = 'http://localhost:3001';
+
 function useSocket({
   type,
   onBroadcastReceived,
@@ -11,7 +14,7 @@ function useSocket({
   const [clientId, setClientId] = useState(null);
 
   useEffect(() => {
-    const socket = io('http://localhost:3001'); // Connect to WebSocket server
+    const socket = io(BASE_URL); // Connect to WebSocket server
     setSocket(socket);
     socket.emit('initialConnect', type);
 

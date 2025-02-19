@@ -17,20 +17,22 @@ const setupSocket = (server) => {
     }, 10000);
 
     socket.on('changeInfo', ({ type, payload }) => {
+      let newServerState;
       if (type === 'OT') {
         if (payload.actionType === 'INC') {
-          serverState += 1;
+          newServerState = serverState + 1;
         } else if (payload.actionType === 'DEC') {
-          serverState -= 1;
+          newServerState = serverState - 1;
         }
-        const delay = Math.floor(Math.random() * 3000);
+        serverState = newServerState;
+        const delay = Math.floor(Math.random() * 5000);
         setTimeout(() => {
-          socket.broadcast.emit('broadcast', { serverState });
+          io.emit('broadcast', { serverState: newServerState });
         }, delay);
       }
 
       if (type === 'OpCRDT') {
-        const delay = Math.floor(Math.random() * 3000);
+        const delay = Math.floor(Math.random() * 5000);
         setTimeout(() => {
           socket.broadcast.emit('broadcast', payload);
         }, delay);

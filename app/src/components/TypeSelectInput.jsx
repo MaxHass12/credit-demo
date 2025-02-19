@@ -3,7 +3,7 @@ const TypeSelectedInput = ({ selectedOption, onChange }) => {
     onChange(e.target.value);
   };
   return (
-    <div>
+    <div className="type-select">
       <label>
         <input
           type="radio"

@@ -1,0 +1,47 @@
+body {
+  font-size: 16px;
+  line-height: 1.5;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+.main-ctr {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.type-select {
+  display: flex;
+  min-width: 80vw;
+  justify-content: space-around;
+  margin-top: 16px;
+}
+
+.card-container {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  max-width: 400px;
+  width: 100%;
+  border: 1px solid #e0e0e0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  min-width: fit-content;
+  margin-top: 48px;
+}
+
+.counter {
+  display: flex;
+  gap: 10px;
+}
+
+.counter > input {
+  max-width: 50px;
+}
+
+.table-wrapper h3 {
+  margin-bottom: 5px;
+}

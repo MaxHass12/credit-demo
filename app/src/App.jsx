@@ -21,7 +21,7 @@ function App() {
   };
 
   return (
-    <div>
+    <div className="main-ctr">
       <TypeSelectedInput selectedOption={type} onChange={handleTypeChange} />
       {type === 'OT' && <OperationalTransformation />}
       {type === 'OpCRDT' && <OperationCRDT />}

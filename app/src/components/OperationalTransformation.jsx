@@ -37,8 +37,8 @@ function OperationalTransformation() {
   };
 
   return (
-    <div>
-      <h2>Operational Transformation</h2>
+    <div className="card-container">
+      <h2>Operational Transformation (Not CRDT)</h2>
       {clientId && (
         <div>
           <p>
