@@ -16,7 +16,7 @@ function useSocket({
     socket.emit('initialConnect', type);
 
     socket.on('initialConnectResponse', ({ clientId, serverState }) => {
-      setClientId(clientId);
+      setClientId(clientId.slice(0, 6));
       onInitialConnectResponse(serverState);
     });
 

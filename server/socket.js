@@ -30,7 +30,7 @@ const setupSocket = (server) => {
         // const delay = 0;
         const delay = Math.floor(Math.random() * (2000 - 100 + 1)) + 100;
         setTimeout(() => {
-          io.emit('broadcast', payload);
+          socket.broadcast.emit('broadcast', payload);
         }, delay);
       }
     });

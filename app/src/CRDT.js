@@ -1,38 +1,38 @@
 export class OpCRDT {
-  #state;
-  #visibleState;
+  #counterValue;
+  #history;
 
   constructor() {
-    this.#state = new Map();
-    this.#visibleState = 0;
+    this.#counterValue = 0;
+    this.#history = [];
   }
 
-  #syncVisibleState() {
-    let newCounter = 0;
-    this.#state.values().forEach((val) => {
-      if (val === 'INC') {
-        newCounter += 1;
-      } else {
-        newCounter -= 1;
-      }
-    });
-    this.#visibleState = newCounter;
-  }
-
-  getState() {
-    return Object.fromEntries(this.#state);
-  }
-
-  getVisibleState() {
-    return this.#visibleState;
-  }
-
-  addEventToState({ timestamp, changeType }) {
-    if (this.#state.has(timestamp)) {
-      return;
+  registerEvent({ actionType, clientId, timestamp }) {
+    if (!clientId) {
+      clientId = 'self';
+    }
+    if (!timestamp) {
+      timestamp = Date.now().toString();
     }
 
-    this.#state.set(timestamp, changeType);
-    this.#syncVisibleState();
+    if (actionType === 'INC') {
+      this.#counterValue += 1;
+    } else if (actionType === 'DEC') {
+      this.#counterValue -= 1;
+    }
+
+    this.#history.push([clientId, timestamp, actionType]);
+  }
+
+  merge({ actionType, clientId, timestamp }) {
+    this.registerEvent({ actionType, clientId, timestamp });
+  }
+
+  getCounterValue() {
+    return this.#counterValue;
+  }
+
+  getHistory() {
+    return [...this.#history];
   }
 }

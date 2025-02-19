@@ -4,11 +4,13 @@ import useSocket from '../useSocket.js';
 import { OpCRDT as OpCRDTDataType } from '../CRDT.js';
 import { JsonView } from 'react-json-view-lite';
 import 'react-json-view-lite/dist/index.css';
+import { getTimeString } from '../utils.js';
+import TableComponent from './TableComponent.jsx';
 
 function OperationCRDT() {
   const [randomNumber, setRandomNumber] = useState('');
-  const [clientState, setClientState] = useState(new OpCRDTDataType());
-  const [randomStateForRerender, setRandomStateForRerender] = useState(
+  const [crdt, _setCrdt] = useState(new OpCRDTDataType());
+  const [_randomStateForRerender, setRandomStateForRerender] = useState(
     Math.random()
   );
 
@@ -18,8 +20,8 @@ function OperationCRDT() {
 
   const handleInitialConnectResponse = useCallback((serverState) => {}, []);
 
-  const handleBroadcastReceived = useCallback((val) => {
-    clientState.addEventToState(val);
+  const handleBroadcastReceived = useCallback((payload) => {
+    crdt.registerEvent(payload);
     setRandomStateForRerender(Math.random());
   }, []);
 
@@ -31,14 +33,19 @@ function OperationCRDT() {
   });
 
   const handleCounterChange = (actionType) => {
+    const timestamp = getTimeString();
+
     const changeInfo = {
       type: 'OpCRDT',
       payload: {
-        timestamp: Date.now().toString(),
-        changeType: actionType,
+        timestamp,
+        actionType,
+        clientId,
       },
     };
     sendChangeInfo(changeInfo);
+    crdt.registerEvent({ actionType, timestamp });
+    setRandomStateForRerender(Math.random());
   };
 
   return (
@@ -46,20 +53,18 @@ function OperationCRDT() {
       <h2>Operational Transformation</h2>
       {clientId && (
         <div>
-          <p>
-            Socket Connection Established. Client Id : {clientId.slice(0, 6)}
-          </p>
+          <p>Socket Connection Established. Client Id : {clientId}</p>
           <p> Random Number From Server : {randomNumber}</p>
         </div>
       )}
       <Counter
-        value={clientState.getVisibleState()}
+        value={crdt.getCounterValue()}
         onIncrease={() => handleCounterChange('INC')}
         onDecrease={() => handleCounterChange('DEC')}
       />{' '}
       <div>
-        <h3>Client State</h3>
-        <JsonView data={clientState.getState()} />
+        <h3>Change History</h3>
+        <TableComponent data={crdt.getHistory()} />
       </div>
     </div>
   );
