@@ -1,12 +1,17 @@
 import { useState } from 'react';
-import SocketComponent from './components/SocketComponent';
+import TypeSelectedInput from './components/TypeSelectInput';
+import OperationalTransformation from './components/OperationalTransformation';
 
 function App() {
-  // const [type, setType] = useState('');
+  const [type, setType] = useState('OT');
+
   return (
     <div>
-      <h1>Web Socket</h1>
-      <SocketComponent />
+      <TypeSelectedInput
+        selectedOption={type}
+        onChange={(value) => setType(value)}
+      />
+      {type === 'OT' && <OperationalTransformation />}
     </div>
   );
 }

@@ -1,16 +1,31 @@
 import { Server } from 'socket.io';
 
+let serverState = 0;
+
 const setupSocket = (server) => {
   const io = new Server(server, {
     cors: { origin: '*' }, // Allow frontend connections
   });
 
   io.on('connection', (socket) => {
-    console.log('Socket.IO client connected. Client ID:', socket.id);
+    console.log('client connected', socket.id);
 
-    socket.on('message', (msg) => {
-      console.log('Received:', msg, '. Client Id:', socket.id);
-      socket.emit('message', 'Message received!');
+    socket.emit('initialConnectResponse', { clientId: socket.id, serverState });
+
+    setInterval(() => {
+      socket.emit('randomNumber', Math.random());
+    }, 5000);
+
+    socket.on('changeInfo', ({ type, payload }) => {
+      if (type === 'OT') {
+        if (payload.actionType === 'INC') {
+          serverState += 1;
+        } else if (payload.actionType === 'DEC') {
+          serverState -= 1;
+        }
+        console.log(serverState);
+        io.emit('broadcast', { serverState });
+      }
     });
 
     socket.on('disconnect', () => {
