@@ -28,8 +28,10 @@ function OperationalTransformation() {
     let changeInfoToSend;
     if (type === 'INC') {
       changeInfoToSend = { type: 'OT', payload: { actionType: 'INC' } };
+      setClientState((prevState) => prevState + 1);
     } else if (type === 'DEC') {
       changeInfoToSend = { type: 'OT', payload: { actionType: 'DEC' } };
+      setClientState((prevState) => prevState - 1);
     }
     sendChangeInfo(changeInfoToSend);
   };

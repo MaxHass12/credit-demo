@@ -36,3 +36,44 @@ export class OpCRDT {
     return [...this.#history];
   }
 }
+
+export class StateCRDT {
+  #state;
+  #history;
+
+  constructor() {
+    this.#state = {
+      numPositives: 0,
+      numNegatives: 0,
+    };
+    this.#history = [];
+  }
+
+  changeState(actionType) {
+    if (actionType === 'INC') {
+      this.#state.numPositives += 1;
+    } else if (actionType === 'DEC') {
+      this.#state.numNegatives -= 1;
+    }
+
+    return { ...this.#state };
+  }
+
+  getCounterValue() {
+    return this.#state.numPositives - this.#state.numNegatives;
+  }
+
+  getHistory() {
+    return [...this.#history];
+  }
+
+  merge({ numPositives, numNegatives }) {
+    const newNumPositives = Math.max(this.#state.numPositives, numPositives);
+    const newNumNegatives = Math.max(this.#state.numNegatives, numNegatives);
+
+    this.#state.numPositives = newNumPositives;
+    this.#state.numNegatives = newNumNegatives;
+
+    this.#history.push({ ...this.#state });
+  }
+}
