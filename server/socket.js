@@ -14,7 +14,7 @@ const setupSocket = (server) => {
 
     setInterval(() => {
       socket.emit('randomNumber', Math.floor(Math.random() * 1000));
-    }, 10000);
+    }, 15000);
 
     socket.on('changeInfo', ({ type, payload }) => {
       let newServerState;

@@ -57,9 +57,9 @@ function OperationalTransformation() {
           onDecrease={() => handleCounterChange('DEC')}
         />{' '}
       </div>
-      <div>
+      {/* <div>
         <p>Client State : {clientState}</p>
-      </div>
+      </div> */}
     </div>
   );
 }
