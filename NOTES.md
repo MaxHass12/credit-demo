@@ -1,10 +1,12 @@
-- How to design an application for real-time collaborative editing? With the client-server architecture our naive solution would most likely be of the followind design pattern.
+How to design an application for real-time collaborative editing?
+
+With the client-server architecture our naive solution would most likely be similar to the following design pattern.
 
 # Operational Transform (OT)
 
-- OT is the main technique used (for eg in Google Docs,etc) to design real-time collborative editing to ensure consistency when multiple users edit the same document simultaneously.
+OT is the main technique used (for eg in Google Docs,etc) to design real-time collborative editing to ensure consistency when multiple users edit the same document simultaneously.
 
-- OT is server-led event-driven architecture. In OT
+OT is server-led event-driven architecture. In OT
 
 1. Each client's edits are recorded as **operations**.
 2. These **operations** are send by clients to server.
@@ -15,15 +17,17 @@ So, in OT server is the source of truth and responsible for conflict resolution.
 
 # What is CRDT ?
 
-- The other approach to do it is via CRDT. With CRDT, server is no longer a source of truth and is not responsible for conflict resolution. In a P2P setup, server is not even necessary.
+The other approach to do it is via CRDT. With CRDT, server is no longer a source of truth and is not responsible for conflict resolution. In a P2P setup, server is not even necessary.
 
-- CRDT (**Conflict-Free Resolution Data Type**) is a **Distributed Data Structure** that allows multiple replicas to be **updated independently**, **merged automatically** in a way that **guarantees eventual consistency**.
+CRDT (**Conflict-Free Resolution Data Type**) is a **Distributed Data Structure** that allows multiple replicas to be **updated independently**, **merged automatically** in a way that **guarantees eventual consistency**.
 
 CRDT a is a _Data Structure_ that is _replicated_ across multiple nodes with the following features:
 
 1. A replica in any node can be updated independently, concurrently and without coordinating with any other replica.
 2. An algorithm resolves any merge conflict automatically.
 3. Though replicas may have different state at any given point, they are guaranteed to be _eventually convergent_.
+
+More on the implementation later.
 
 # Use Cases:
 
@@ -77,14 +81,13 @@ A big positive is that this is a self-healing system. Even if a replica goes out
 
 A negative that the about of data transmitted is large because the entire state needs to be transmitted.
 
-NOTE : In CRDT, a server is not required in the sense of a program which handles requests and generates response. In the demo, server only exists to broadcast the information from 1 replica to other replicas. This can also be done by P2P architecture.
+NOTE : In CRDT, a server is not required in the traditional sense of a program which handles requests and generates response. In the demo, server only exists to broadcast the information from 1 replica to other replicas. This can also be done by P2P architecture.
 
 Libraries provide readymade implementation of CRDT.
 
 # Limitations of CRDT
 
-- All of the major application providers favour _strong consistency_ and hence they opt for server-led, event driven architecture.
--
+- All of the major application providers (Google Docs, Evernote, etc) favour _strong consistency_ and hence they opt for server-led, event driven architecture. CRDT are not ideal for that use case.
 
 # Properties of CRDT
 

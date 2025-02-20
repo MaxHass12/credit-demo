@@ -52,20 +52,22 @@ function OperationCRDT() {
   };
 
   return (
-    <div className="card-container">
-      <h2>Operation Based CRDT</h2>
-      {clientId && (
-        <div>
-          <p>Socket Connection Established. Client Id : {clientId}</p>
-          <p> Random Number From Server : {randomNumber}</p>
-        </div>
-      )}
-      <Counter
-        value={crdt.getCounterValue()}
-        onIncrease={() => handleCounterChange('INC')}
-        onDecrease={() => handleCounterChange('DEC')}
-      />{' '}
-      <div className="table-wrapper">
+    <div className="crdt-ctr">
+      <div className="card-container">
+        <h2>Operation Based CRDT</h2>
+        {clientId && (
+          <div>
+            <p>Socket Connection Established. Client Id : {clientId}</p>
+            <p> Random Number From Server : {randomNumber}</p>
+          </div>
+        )}
+        <Counter
+          value={crdt.getCounterValue()}
+          onIncrease={() => handleCounterChange('INC')}
+          onDecrease={() => handleCounterChange('DEC')}
+        />{' '}
+      </div>
+      <div className="table-wrapper card-container">
         <h3>Operation History</h3>
         <TableComponent data={crdt.getHistory()} />
       </div>

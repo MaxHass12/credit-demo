@@ -33,25 +33,30 @@ function OperationalTransformation() {
       changeInfoToSend = { type: 'OT', payload: { actionType: 'DEC' } };
       setClientState((prevState) => prevState - 1);
     }
-    sendChangeInfo(changeInfoToSend);
+    const delay = Math.floor(Math.random() * 3000);
+    setTimeout(() => {
+      sendChangeInfo(changeInfoToSend);
+    }, delay);
   };
 
   return (
-    <div className="card-container">
-      <h2>Operational Transformation (Not CRDT)</h2>
-      {clientId && (
-        <div>
-          <p>
-            Socket Connection Established. Client Id : {clientId.slice(0, 6)}
-          </p>
-          <p> Random Number From Server : {randomNumber}</p>
-        </div>
-      )}
-      <Counter
-        value={clientState}
-        onIncrease={() => handleCounterChange('INC')}
-        onDecrease={() => handleCounterChange('DEC')}
-      />{' '}
+    <div className="crdt-ctr">
+      <div className="card-container">
+        <h2>Operational Transformation (Not CRDT)</h2>
+        {clientId && (
+          <div>
+            <p>
+              Socket Connection Established. Client Id : {clientId.slice(0, 6)}
+            </p>
+            <p> Random Number From Server : {randomNumber}</p>
+          </div>
+        )}
+        <Counter
+          value={clientState}
+          onIncrease={() => handleCounterChange('INC')}
+          onDecrease={() => handleCounterChange('DEC')}
+        />{' '}
+      </div>
       <div>
         <p>Client State : {clientState}</p>
       </div>

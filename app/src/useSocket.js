@@ -26,7 +26,7 @@ function useSocket({
     socket.on('randomNumber', (val) => onRandomNumberReceived(val));
 
     socket.on('broadcast', (val) => {
-      console.log('broadcast received', val);
+      console.log('broadcast received', JSON.stringify(val, null, 2));
       onBroadcastReceived(val);
     });
 

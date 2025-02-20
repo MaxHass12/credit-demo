@@ -13,7 +13,7 @@ const setupSocket = (server) => {
     socket.emit('initialConnectResponse', { clientId: socket.id, serverState });
 
     setInterval(() => {
-      socket.emit('randomNumber', Math.random());
+      socket.emit('randomNumber', Math.floor(Math.random() * 1000));
     }, 10000);
 
     socket.on('changeInfo', ({ type, payload }) => {
@@ -25,7 +25,7 @@ const setupSocket = (server) => {
           newServerState = serverState - 1;
         }
         serverState = newServerState;
-        const delay = Math.floor(Math.random() * 5000);
+        const delay = 0;
         setTimeout(() => {
           io.emit('broadcast', { serverState: newServerState });
         }, delay);
@@ -39,7 +39,7 @@ const setupSocket = (server) => {
       }
 
       if (type === 'StateCRDT') {
-        const delay = Math.floor(Math.random() * 3000);
+        const delay = Math.floor(Math.random() * 5000);
 
         setTimeout(() => {
           socket.broadcast.emit('broadcast', payload);
