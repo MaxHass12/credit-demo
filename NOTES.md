@@ -49,7 +49,7 @@ More on the implementation later.
 
 5. Misc other decentralized applications
 
-- Why? Ensures consistency in a decentralized network without needing consensus for every change. (Blockchain is not via CRDT)
+- Why? Ensures consistency in a decentralized network without needing consensus for every change. (Blockchain is not via CRDT) [NOTE: There is a big difference between decentralized and distributed]
 
 CRDT are use in some form or other by Redis Enterprise, MS CosmosDB, Soundcloud, Figma, Facebook, Paypal, Apple Notes, etc. (Conflicting information on this)[1][2]
 
